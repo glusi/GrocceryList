@@ -108,7 +108,8 @@ class ListGen : AppCompatActivity() {
             position += 1
             val fab: View = findViewById(R.id.next)
             fab.setOnClickListener { view ->
-                output.addAll(selected_lines)
+                if(selected_lines!=null)
+                    output.addAll(selected_lines)
                 output = output.distinct() as ArrayList<String>
                 val intent = Intent(this@ListGen, ListGen::class.java)
                 intent.putExtra("position", position)
@@ -173,8 +174,10 @@ class ListGen : AppCompatActivity() {
             position += 1
             val fab: View = findViewById(R.id.next)
             fab.setOnClickListener { view ->
-                output.addAll(selected_lines)
-                output = output.distinct() as ArrayList<String>
+                if(selected_lines!=null && selected_lines.isNotEmpty())
+                    output.addAll(selected_lines)
+                if(output!=null && output.count()>1)
+                    output = output.distinct() as ArrayList<String>
                 val intent = Intent(this@ListGen, ListGen::class.java)
                 intent.putExtra("position", position)
                 val args = Bundle()
