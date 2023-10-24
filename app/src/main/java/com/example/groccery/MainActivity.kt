@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var lists = ArrayList<List<String>>()
         var titles = ArrayList<String>()
+        var output = ArrayList<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null)
                     .show()
                 val intent = Intent(this@MainActivity, ListGen::class.java)
-                intent.putExtra("position",selected_pages[0])
+                intent.putExtra("position",0)
                 val args = Bundle()
                 args.putSerializable("selected", selected_pages as Serializable?)
                 intent.putExtra("BUNDLE", args)
@@ -99,7 +100,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initLists(){
+        output.add("")
         val page0 : MutableList<String> = mutableListOf()
+        page0.add("")
         page0.add("молоко")
         page0.add("Кефир")
         page0.add("ривион")
@@ -118,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("рикотта")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("макаронные изделия")
         page0.add("Гречка")
         page0.add("кускус")
@@ -141,6 +145,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("Экстракт ванили ")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("Хлеб")
         page0.add("булочки")
         page0.add("питы")
@@ -149,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("чипсы")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("Оливковое масло")
         page0.add("Спрей с маслом")
         page0.add("Уксус")
@@ -173,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("Сгущённое молоко")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("чай")
         page0.add("кофе")
         page0.add("Цикорий")
@@ -188,6 +195,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("Зефир ")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("замороженное мясо")
         page0.add("замороженная рыба")
         page0.add("Бурекас")
@@ -197,6 +205,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("пельмени")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("Помидор")
         page0.add("огурец")
         page0.add("перец")
@@ -226,6 +235,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("брокколи")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("яблоко")
         page0.add("Груша")
         page0.add("персик")
@@ -239,6 +249,7 @@ class MainActivity : AppCompatActivity() {
         page0.add("ягоды")
         lists.add(page0.toList())
         page0.clear()
+        page0.add("")
         page0.add("Туалетная бумага")
         page0.add("Бумажное полотенце")
         page0.add("Бумага для выпечки")

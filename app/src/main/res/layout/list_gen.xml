@@ -28,11 +28,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="page"/>
     </androidx.appcompat.widget.Toolbar>
-    <Button
+    <CheckBox
         android:id="@+id/testbutton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:focusable="false"
+        android:clickable="false"
         android:text="submit" />
     <ListView
         android:id="@+id/list_products"
