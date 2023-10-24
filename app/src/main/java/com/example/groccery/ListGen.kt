@@ -1,18 +1,37 @@
 package com.example.groccery
+
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.GridView
-import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.io.Serializable
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+import java.io.IOException
+import java.io.Serializable
+import android.content.ContentValues
+
+import android.provider.MediaStore
+import android.view.ViewTreeObserver
+
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+
+import java.io.OutputStream
 
 class ListGen : AppCompatActivity() {
     lateinit var listView: ListView
@@ -38,9 +57,10 @@ class ListGen : AppCompatActivity() {
         var output: ArrayList<String> = MainActivity.output
 
         if (position == selectedPages.size) {
-            title.text = "список покупок"
+            title.text = "Список покупок готов!"
             listView.adapter =
                 ArrayAdapter(this, android.R.layout.simple_list_item_1, output)
+
         } else {
             val pageNumber = selectedPages.get(position)
             title.text = titles[pageNumber]
@@ -59,23 +79,13 @@ class ListGen : AppCompatActivity() {
                     if (view_item.alpha != 0.5f) {
                         view_item.alpha = 0.5f
                         selected_lines.add(listView.getItemAtPosition(position_iternal).toString())
-//                val t = view_item.
-//                val c = view_item.getClass().getName()
-//                val checkbox : CheckBox=  view_item.findViewById(R.id.testbutton)
-//                checkbox.isChecked = true
-//                listView.setItemChecked(position_iternal, true)
                     } else {
                         view_item.alpha = 1.0f
                         selected_lines.remove(
                             listView.getItemAtPosition(position_iternal).toString()
                         )
-//                listView.setItemChecked(position_iternal, false)
                     }
                 }
-
-//        setSupportActionBar(findViewById(R.id.my_toolbar))
-//        title = findViewById(R.id.my_toolbar)
-
 
             position += 1
             val fab: View = findViewById(R.id.next)
@@ -91,4 +101,6 @@ class ListGen : AppCompatActivity() {
             }
         }
     }
+
+
 }
