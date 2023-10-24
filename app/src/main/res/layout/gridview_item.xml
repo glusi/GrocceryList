@@ -2,8 +2,8 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
@@ -12,8 +12,8 @@
     <!--on below line we are creating
         a linear layout for grid view item-->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
 
         <!--on below line we are creating
@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/idIVCourse"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
@@ -30,15 +30,11 @@
             a simple text view-->
         <TextView
             android:id="@+id/idTVCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dip"
-            android:layout_centerInParent="true"
-            android:background="#AA000000"
-            android:padding="12dip"
-            android:text="SomeText"
-            android:textColor="#ffffffff" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="I am TextView"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

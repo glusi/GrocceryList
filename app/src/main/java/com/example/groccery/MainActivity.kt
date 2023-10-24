@@ -1,21 +1,21 @@
 package com.example.groccery
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
-import java.util.*
-import kotlin.collections.ArrayList
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import java.io.Serializable
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var courseGRV: GridView
     lateinit var courseList: List<GridViewModal>
+    lateinit var selected_pages: ArrayList<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         // initializing variables of grid view with their ids.
         courseGRV = findViewById(R.id.idGRV)
         courseList = ArrayList<GridViewModal>()
+        selected_pages = ArrayList<Int>()
 
         // on below line we are adding data to
         // our course list with image and course name.
@@ -58,16 +59,27 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
 
             ).show()
-            if(view.alpha!=0.5f)
+            if(view.alpha!=0.5f){
                 view.alpha=0.5f
-            else
-                view.alpha=1.0f
+                selected_pages.add(position)}
+            else{
+            view.alpha = 1.0f
+            selected_pages.remove(position)
+            }
 
             val fab: View = findViewById(R.id.fab)
             fab.setOnClickListener { view ->
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Here's a Snackbar "+selected_pages, Snackbar.LENGTH_LONG)
                     .setAction("Action", null)
                     .show()
+                val intent = Intent(this@MainActivity, ListGen::class.java)
+                intent.putExtra("position",0)
+//                val args = Bundle()
+//                args.putSerializable("ARRAYLIST", selected_pages as Serializable?)
+//                intent.putExtra("selected", args)
+                startActivity(intent)
+
+
             }
 
 //        // use arrayadapter and define an array

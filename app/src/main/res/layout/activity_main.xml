@@ -31,9 +31,10 @@
             android:fitsSystemWindows="true">
 
             <GridView
+
                 android:id="@+id/idGRV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:horizontalSpacing="6dp"
                 android:numColumns="2"
                 android:verticalSpacing="6dp" />
