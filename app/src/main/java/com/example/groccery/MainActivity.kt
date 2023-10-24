@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         var lists = ArrayList<List<String>>()
         var titles = ArrayList<String>()
         var output = ArrayList<String>()
+        var backgrounds = ArrayList<Int>()
     }
 
 
@@ -271,6 +272,16 @@ class MainActivity : AppCompatActivity() {
         page0.add("Спирт")
         page0.add("Спички")
         lists.add(page0.toList())
+
+        backgrounds.add(R.drawable.back_milk)
+        backgrounds.add(R.drawable.back_bake)
+        backgrounds.add(R.drawable.back_bread)
+        backgrounds.add(R.drawable.back_souses)
+        backgrounds.add(R.drawable.back_sweets)
+        backgrounds.add(R.drawable.back_ice)
+        backgrounds.add(R.drawable.back_veg)
+        backgrounds.add(R.drawable.back_fruit)
+        backgrounds.add(R.drawable.back_clean)
 
     }
 }

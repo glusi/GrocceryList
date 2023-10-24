@@ -23,6 +23,8 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.Serializable
 import android.content.ContentValues
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 
 import android.provider.MediaStore
 import android.view.ViewTreeObserver
@@ -41,6 +43,8 @@ class ListGen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_gen)
 
+
+
         selected_lines = ArrayList<String>()
 
         var bundle: Bundle? = intent.extras
@@ -54,17 +58,31 @@ class ListGen : AppCompatActivity() {
         var lists: ArrayList<List<String>> = MainActivity.lists
         listView = findViewById(R.id.list_products)
 
+        var backgrounds: ArrayList<Int> = MainActivity.backgrounds
+
         var output: ArrayList<String> = MainActivity.output
+
+
+//        listView.setBackgroundResource(R.drawable.back_bread)
+
+//        listView.setBackground(mDrawableImage)
+
 
         if (position == selectedPages.size) {
             title.text = "Список покупок готов!"
             listView.adapter =
                 ArrayAdapter(this, android.R.layout.simple_list_item_1, output)
+            listView.setBackgroundResource(0)
 
         } else {
             val pageNumber = selectedPages.get(position)
             title.text = titles[pageNumber]
 
+            val resource : BitmapDrawable = getResources().getDrawable((backgrounds.get(pageNumber))) as BitmapDrawable
+            resource.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
+            listView.setBackground(resource)
+            val background = listView.background
+            background.alpha = 35
 
             listView.adapter =
                 ArrayAdapter(this, android.R.layout.simple_list_item_1, lists[pageNumber])
