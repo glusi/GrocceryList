@@ -2,31 +2,42 @@ package com.example.groccery
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.ArrayAdapter
+import android.widget.GridView
+import android.widget.ListAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
+import java.io.Serializable
+
 
 class ListGen : AppCompatActivity() {
+    lateinit var listView: ListView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_gen)
 
         var bundle :Bundle ?=intent.extras
-//        var selected_pages = bundle!!.getA("selected")
+        val args = intent.getBundleExtra("BUNDLE")
+        val selected_pages = args!!.getSerializable("selected") as ArrayList<Int>?
         var position = bundle!!.getInt("position")
         print(position)
-        position+=1
+
+        var lists : ArrayList<List<String>> = MainActivity.lists
+        listView = findViewById(R.id.list_products)
+        listView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lists[position])
+
+        position += 1
         val fab: View = findViewById(R.id.next)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Here's a Snackbar "+position, Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
+
             val intent = Intent(this@ListGen, ListGen::class.java)
-            intent.putExtra("position", 0)
-//                val args = Bundle()
-//                args.putSerializable("ARRAYLIST", selected_pages as Serializable?)
-//                intent.putExtra("selected", args)
+            intent.putExtra("position", position)
+            val args = Bundle()
+            args.putSerializable("selected", selected_pages as Serializable?)
+            intent.putExtra("BUNDLE", args)
+
             startActivity(intent)
         }
     }
+
 }

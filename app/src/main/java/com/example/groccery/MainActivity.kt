@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +16,15 @@ class MainActivity : AppCompatActivity() {
     lateinit var courseList: List<GridViewModal>
     lateinit var selected_pages: ArrayList<Int>
 
+    companion object {
+        var lists = ArrayList<List<String>>()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initLists()
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
 
@@ -73,27 +78,82 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null)
                     .show()
                 val intent = Intent(this@MainActivity, ListGen::class.java)
-                intent.putExtra("position",0)
-//                val args = Bundle()
-//                args.putSerializable("ARRAYLIST", selected_pages as Serializable?)
-//                intent.putExtra("selected", args)
+                intent.putExtra("position",selected_pages[0])
+                val args = Bundle()
+                args.putSerializable("selected", selected_pages as Serializable?)
+                intent.putExtra("BUNDLE", args)
                 startActivity(intent)
 
 
             }
-
-//        // use arrayadapter and define an array
-//        val arrayAdapter: ArrayAdapter<*>
-//        val users = arrayOf(
-//            "Молочные продукты", "ВАРКА И ВЫПЕЧКА", "СОУСЫ И ДОБАВКИ", "СЛАДКОЕ, НАПИТКИ И ЗАКУСКИ", "ЗАМОРОЖЕННЫЕ", "мясо и рыба",
-//            "овощи", "фрукты", "УБОРКА И ОБСЛУЖИВАНИЕ ДОМА"
-//        )
-//
-//        // access the listView from xml file
-//        var mListView = findViewById<GridView>(R.id.list_view)
-//        arrayAdapter = ArrayAdapter(this,
-//            android.R.layout.simple_list_item_1, users)
-//        mListView.adapter = arrayAdapter
         }
+    }
+
+    fun initLists(){
+        val page0 : MutableList<String> = mutableListOf()
+        page0.add("молоко")
+        page0.add("Кефир")
+        page0.add("ривион")
+        page0.add("сметана")
+        page0.add("йогурт")
+        page0.add("сливочное масло")
+        page0.add("Желтый сыр")
+        page0.add("Cыр эмек")
+        page0.add("котэдж")
+        page0.add("творог")
+        page0.add("Цфатский сыр ")
+        page0.add("намазки для хлеба")
+        page0.add("Сыр фета")
+        page0.add("Сыр Дзадзики")
+        page0.add("лàбанэ")
+        page0.add("рикотта")
+        lists.add(page0.toList())
+        page0.clear()
+        page0.add("макаронные изделия")
+        page0.add("Гречка")
+        page0.add("кускус")
+        page0.add("Я́чневая крупа́")
+        page0.add("Рис")
+        page0.add("Овсяная каша")
+        page0.add("манная крупа")
+        page0.add("Панировочные сухари")
+        page0.add("мука")
+        page0.add("Соль")
+        page0.add("яйца ")
+        page0.add("Порошок для выпечки")
+        page0.add("Питьевая сода")
+        page0.add("Сахар")
+        page0.add("Стевия")
+        page0.add("коричневый сахар")
+        page0.add("какао")
+        page0.add("Лимонная соль")
+        page0.add("сливки")
+        page0.add("Ванильный сахар")
+        page0.add("Экстракт ванили ")
+        lists.add(page0.toList())
+//        val page2 = ArrayList<String>()
+        page0.clear()
+        page0.add("Оливковое масло")
+        page0.add("Спрей с маслом")
+        page0.add("Уксус")
+        page0.add("специи")
+        page0.add("Тунa")
+        page0.add("оливки")
+        page0.add("томатный соус")
+        page0.add("Хумус")
+        page0.add("салат из баклажанов")
+        page0.add("Кетчуп")
+        page0.add("майонез")
+        page0.add("Матбуха")
+        page0.add("терияки")
+        page0.add("Соевый соус")
+        page0.add("чили")
+        page0.add("мед")
+        page0.add("кленовый сироп")
+        page0.add("силан")
+        page0.add("Нуте́лла")
+        page0.add("Сгущённое молоко")
+        page0.add("Сгущённое молоко")
+        lists.add(page0.toList())
     }
 }
