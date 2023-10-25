@@ -48,15 +48,15 @@ class ListGen : AppCompatActivity() {
         val selectedPages = args!!.getSerializable("selected") as ArrayList<Int>
         var position = bundle!!.getInt("position")
 
-        var titles: ArrayList<String> = MainActivity.titles
+        var titles: ArrayList<String> = MainChoose.titles
         val title: TextView = findViewById(R.id.title)
 
-        var lists: ArrayList<List<String>> = MainActivity.lists
+        var lists: ArrayList<List<String>> = MainChoose.lists
         listView = findViewById(R.id.list_products)
 
-        var backgrounds: ArrayList<Int> = MainActivity.backgrounds
+        var backgrounds: ArrayList<Int> = MainChoose.backgrounds
 
-        var output: ArrayList<String> = MainActivity.output
+        var output: ArrayList<String> = MainChoose.output
 
 
 
