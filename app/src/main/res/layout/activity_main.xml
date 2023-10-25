@@ -3,15 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="4dp">
+    <RelativeLayout
+        android:id="@+id/back_main"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:background="#008080"
+        android:background="@android:color/transparent"
         android:padding="5dp"
-        android:text="TutorialsPoint"
-        android:textColor="#fff"
+        android:text="Привет!"
+        android:textColor="#008080"
         android:textSize="24sp"
         android:textStyle="bold" />
     <Button
@@ -19,12 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@android:color/background_dark"
-        android:padding="4dp"
-        android:text="Open New Activity"
+        android:background="@android:color/holo_blue_light"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="20dp"
+        android:text="Начать новый\n список покупок"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold" />
+    </RelativeLayout>
 </RelativeLayout>
 
 

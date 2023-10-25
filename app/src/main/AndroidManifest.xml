@@ -36,6 +36,7 @@
         </activity>
         <activity android:name=".MainChoose"></activity>
         <activity android:name=".ListGen"></activity>
+
     </application>
 
 </manifest>
