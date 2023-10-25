@@ -293,7 +293,7 @@ class MainChoose : AppCompatActivity() {
             super.onBackPressed()
         }
         // Set the negative button with "No" text and a lambda OnClickListener
-        builder.setNegativeButton("оставайся") { dialog, which ->
+        builder.setNegativeButton("остаться") { dialog, which ->
             // If the user clicks "No," the dialog box is canceled
             dialog.cancel()
         }
