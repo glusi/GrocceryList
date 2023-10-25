@@ -1,10 +1,12 @@
 package com.example.groccery
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
@@ -14,26 +16,11 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-import java.io.IOException
-import java.io.Serializable
-import android.content.ContentValues
-import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
-
-import android.provider.MediaStore
-import android.view.ViewTreeObserver
-
-import kotlinx.coroutines.withContext
+import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
+import java.io.Serializable
 
-import java.io.OutputStream
 
 class ListGen : AppCompatActivity() {
     lateinit var listView: ListView
@@ -76,13 +63,37 @@ class ListGen : AppCompatActivity() {
 
         if (position == selectedPages.size) {
             title.text = "Список покупок готов!"
-            if(output!=null && output.count()>1)
+            if (output != null && output.count() > 1)
                 output = output.distinct() as ArrayList<String>
             listView.adapter =
                 ArrayAdapter(this, android.R.layout.simple_list_item_1, output)
             listView.setBackgroundResource(0)
+            val fab: View = findViewById(R.id.next)
+            fab.setOnClickListener { view ->
 
-        } else {
+                val listView = findViewById<ListView>(R.id.list_products) // Replace with your ListView's ID
+
+                listView.post {
+
+                    val bitmap : Bitmap = getBitmapFromView(findViewById(R.id.list_products))
+                    // Save the bitmap as an image file
+                    val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "listview_image.png")
+                    val outputStream = FileOutputStream(file)
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    outputStream.close()
+
+                    // Share the saved image using FileProvider
+                    val bmpUri = FileProvider.getUriForFile(this, "com.codepath.fileprovider", file)
+
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_STREAM, bmpUri)
+                    intent.type = "image/jpeg"
+
+                    startActivity(Intent.createChooser(intent, "resources.getText(R.string.send_to"))
+                }
+
+            }
+        }else{
             val pageNumber = selectedPages.get(position)
             title.text = titles[pageNumber]
 
@@ -90,6 +101,7 @@ class ListGen : AppCompatActivity() {
                 getResources().getDrawable((backgrounds.get(pageNumber))) as BitmapDrawable
             resource.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
             listView.setBackground(resource)
+
             val background = listView.background
             background.alpha = 35
 
@@ -104,10 +116,16 @@ class ListGen : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     if (view_item.alpha != 0.5f) {
+                        val border = GradientDrawable()
+                        border.setColor(Color.argb(220, 50, 168, 78)) //white background
+                        view_item.setBackground(border)
+//                        }
                         view_item.alpha = 0.5f
                         selected_lines.add(listView.getItemAtPosition(position_iternal).toString())
+
                     } else {
                         view_item.alpha = 1.0f
+                        view_item.setBackground(null)
                         selected_lines.remove(
                             listView.getItemAtPosition(position_iternal).toString()
                         )
@@ -130,5 +148,14 @@ class ListGen : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+    }
+    fun getBitmapFromView(view: View): Bitmap {
+        val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(returnedBitmap)
+        val bgDrawable = view.background
+        if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.WHITE)
+        view.draw(canvas)
+        return returnedBitmap
     }
 }
