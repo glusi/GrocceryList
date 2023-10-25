@@ -1,14 +1,15 @@
 package com.example.groccery
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.GridView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
+
+import androidx.appcompat.app.AlertDialog;
 
 
 class MainChoose : AppCompatActivity() {
@@ -69,10 +70,10 @@ class MainChoose : AppCompatActivity() {
         // click listener for our grid view.
         courseGRV.onItemClickListener = AdapterView.OnItemClickListener { _, view, position, _ ->
 
-            if(view.alpha!=0.5f){
-                view.alpha=0.5f
-                selected_pages.add(position)}
-            else{
+            if (view.alpha != 0.5f) {
+                view.alpha = 0.5f
+                selected_pages.add(position)
+            } else {
                 view.alpha = 1.0f
                 selected_pages.remove(position)
             }
@@ -80,7 +81,7 @@ class MainChoose : AppCompatActivity() {
             val fab: View = findViewById(R.id.fab)
             fab.setOnClickListener { view ->
                 val intent = Intent(this@MainChoose, ListGen::class.java)
-                intent.putExtra("position",0)
+                intent.putExtra("position", 0)
                 val args = Bundle()
                 args.putSerializable("selected", selected_pages as Serializable?)
                 intent.putExtra("BUNDLE", args)
@@ -91,9 +92,9 @@ class MainChoose : AppCompatActivity() {
         }
     }
 
-    fun initLists(){
+    fun initLists() {
         output.add("СПИСОК ПОКУПОК:")
-        val page0 : MutableList<String> = mutableListOf()
+        val page0: MutableList<String> = mutableListOf()
         page0.add("")
         page0.add("Молоко")
         page0.add("Кефир")
@@ -273,4 +274,62 @@ class MainChoose : AppCompatActivity() {
         backgrounds.add(R.drawable.back_clean)
 
     }
+
+    override fun onBackPressed() {
+        // Create the object of AlertDialog Builder class
+        val builder = AlertDialog.Builder(this@MainChoose)
+        // Set the message shown for the Alert
+        builder.setMessage("Текущий список покупок будет удален!")
+        // Set Alert Title
+        builder.setTitle("Предупреждение")
+        // Set Cancelable false for when the user clicks on the outside of the Dialog Box, it will remain shown
+        builder.setCancelable(false)
+        // Set the positive button with "Yes" text and a lambda OnClickListener
+        builder.setPositiveButton("выйти") { dialog, which ->
+            // When the user clicks "Yes," the app will close
+            selected_pages.clear()
+            output.clear()
+            output.add("СПИСОК ПОКУПОК:")
+            super.onBackPressed()
+        }
+        // Set the negative button with "No" text and a lambda OnClickListener
+        builder.setNegativeButton("оставайся") { dialog, which ->
+            // If the user clicks "No," the dialog box is canceled
+            dialog.cancel()
+        }
+
+        // Create the Alert dialog
+        val alertDialog: AlertDialog = builder.create()
+
+        // Show the Alert Dialog box
+        alertDialog.show()
+
+    }
+
+
+
+
+
+
+
+
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        Builde(this)
+//            .setTitle("Delete entry")
+//            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
+//            // The dialog is automatically dismissed when a dialog button is clicked.
+//            .setPositiveButton(android.R.string.yes,
+//                DialogInterface.OnClickListener { dialog, which ->
+//                    selected_pages.clear()
+//                    output.clear()
+//                    output.add("СПИСОК ПОКУПОК:")
+//                    // Continue with delete operation
+//                }) // A null listener allows the button to dismiss the dialog and take no further action.
+//            .setNegativeButton(android.R.string.no, null)
+//            .setIcon(android.R.drawable.ic_dialog_alert)
+//            .show()
+//
+//    }
+
 }
