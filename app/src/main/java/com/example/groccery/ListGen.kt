@@ -23,6 +23,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.Serializable
 import android.graphics.Paint
+import android.media.MediaScannerConnection
 import android.util.LruCache
 import android.view.ViewGroup
 import android.widget.ListAdapter
@@ -61,10 +62,6 @@ class ListGen : AppCompatActivity() {
         var output: ArrayList<String> = MainActivity.output
 
 
-//        listView.setBackgroundResource(R.drawable.back_bread)
-
-//        listView.setBackground(mDrawableImage)
-
 
         if (position == selectedPages.size) {
             title.text = "Список покупок готов!"
@@ -92,11 +89,12 @@ class ListGen : AppCompatActivity() {
                     // Share the saved image using FileProvider
                     val bmpUri = FileProvider.getUriForFile(this, "com.codepath.fileprovider", file)
 
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.putExtra(Intent.EXTRA_STREAM, bmpUri)
-                    intent.type = "image/jpeg"
 
-                    startActivity(Intent.createChooser(intent, "resources.getText(R.string.send_to"))
+                    val intent = Intent(Intent.ACTION_SEND)
+                    //intent.setType("image/*")
+                    intent.putExtra(Intent.EXTRA_STREAM, bmpUri)
+                    intent.type = "image/*"
+                    startActivity(Intent.createChooser(intent, "send"))
                 }
 
             }
@@ -157,30 +155,7 @@ class ListGen : AppCompatActivity() {
         }
 
     }
-//    fun getBitmapFromView(view: ListView): Bitmap {
-//        val listAdapter = view.adapter
-//        var totalHeight = listView.paddingTop + listView.paddingBottom
-//        val desiredWidth = MeasureSpec.makeMeasureSpec(listView.width, MeasureSpec.AT_MOST)
-//        for (i in 0 until listAdapter.getCount()) {
-//            val listItem: View = listAdapter.getView(i, null, listView)
-//            if (listItem != null) {
-//                listItem.layoutParams =
-//                    RelativeLayout.LayoutParams(
-//                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                        RelativeLayout.LayoutParams.WRAP_CONTENT
-//                    )
-//                listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED)
-//                totalHeight += listItem.measuredHeight
-//            }
-//        }
-//
-//        val bitmap  = Bitmap.createBitmap(view.width, totalHeight, Bitmap.Config.ARGB_8888)
-//        val canvas = Canvas(bitmap )
-//        val bgDrawable = view.background
-//        if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.WHITE)
-//        view.draw(canvas)
-//        return bitmap
-//    }
+
 
     fun getBitmapFromView(listView: ListView): Bitmap? {
         val adapter: ListAdapter = listView.adapter
@@ -225,6 +200,26 @@ class ListGen : AppCompatActivity() {
             }
         }
         return bigBitmap
+    }
+    private fun saveImageToGallery(bitmap: Bitmap) {
+        val filename = "your_image.png"
+        val savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+        val file = File(savePath, filename)
+        val fileOutputStream = FileOutputStream(file)
+
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // Notify the MediaScanner to update the gallery
+        MediaScannerConnection.scanFile(
+            this, arrayOf(file.toString()), null
+        ) { _, _ -> }
     }
 
 }
