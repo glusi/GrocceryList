@@ -10,9 +10,11 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.view.View.MeasureSpec
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,10 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.io.Serializable
-
+import android.graphics.Paint
+import android.util.LruCache
+import android.view.ViewGroup
+import android.widget.ListAdapter
 
 class ListGen : AppCompatActivity() {
     lateinit var listView: ListView
@@ -75,11 +80,13 @@ class ListGen : AppCompatActivity() {
 
                 listView.post {
 
-                    val bitmap : Bitmap = getBitmapFromView(findViewById(R.id.list_products))
+                    val bitmap : Bitmap? = getBitmapFromView(findViewById(R.id.list_products))
                     // Save the bitmap as an image file
                     val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "listview_image.png")
                     val outputStream = FileOutputStream(file)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    if (bitmap != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    }
                     outputStream.close()
 
                     // Share the saved image using FileProvider
@@ -150,12 +157,74 @@ class ListGen : AppCompatActivity() {
         }
 
     }
-    fun getBitmapFromView(view: View): Bitmap {
-        val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(returnedBitmap)
-        val bgDrawable = view.background
-        if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.WHITE)
-        view.draw(canvas)
-        return returnedBitmap
+//    fun getBitmapFromView(view: ListView): Bitmap {
+//        val listAdapter = view.adapter
+//        var totalHeight = listView.paddingTop + listView.paddingBottom
+//        val desiredWidth = MeasureSpec.makeMeasureSpec(listView.width, MeasureSpec.AT_MOST)
+//        for (i in 0 until listAdapter.getCount()) {
+//            val listItem: View = listAdapter.getView(i, null, listView)
+//            if (listItem != null) {
+//                listItem.layoutParams =
+//                    RelativeLayout.LayoutParams(
+//                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                        RelativeLayout.LayoutParams.WRAP_CONTENT
+//                    )
+//                listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED)
+//                totalHeight += listItem.measuredHeight
+//            }
+//        }
+//
+//        val bitmap  = Bitmap.createBitmap(view.width, totalHeight, Bitmap.Config.ARGB_8888)
+//        val canvas = Canvas(bitmap )
+//        val bgDrawable = view.background
+//        if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.WHITE)
+//        view.draw(canvas)
+//        return bitmap
+//    }
+
+    fun getBitmapFromView(listView: ListView): Bitmap? {
+        val adapter: ListAdapter = listView.adapter
+        var bigBitmap: Bitmap? = null
+        if (adapter != null) {
+            val size = adapter.count
+            var height = 0
+            val paint = Paint()
+            var iHeight = 0
+            val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
+
+            // Use 1/8th of the available memory for this memory cache.
+            val cacheSize = maxMemory / 8
+            val bitmapCache = LruCache<String, Bitmap>(cacheSize)
+
+            for (i in 0 until size) {
+                val itemView = adapter.getView(i, null, listView) as View
+                itemView.measure(
+                    View.MeasureSpec.makeMeasureSpec(listView.width, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                )
+                itemView.layout(0, 0, itemView.measuredWidth, itemView.measuredHeight)
+                itemView.isDrawingCacheEnabled = true
+                itemView.buildDrawingCache()
+                val drawingCache = itemView.drawingCache
+
+                if (drawingCache != null) {
+                    bitmapCache.put(i.toString(), drawingCache)
+                }
+                height += itemView.measuredHeight
+            }
+
+            bigBitmap = Bitmap.createBitmap(listView.width, height, Bitmap.Config.ARGB_8888)
+            val bigCanvas = Canvas(bigBitmap)
+            bigCanvas.drawColor(Color.WHITE)
+
+            for (i in 0 until size) {
+                val bitmap = bitmapCache.get(i.toString())
+                bigCanvas.drawBitmap(bitmap, 0f, iHeight.toFloat(), paint)
+                iHeight += bitmap?.height ?: 0
+                bitmap?.recycle()
+            }
+        }
+        return bigBitmap
     }
+
 }
