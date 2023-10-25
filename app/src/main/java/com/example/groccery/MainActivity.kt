@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         var backgrounds = ArrayList<Int>()
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -70,13 +68,7 @@ class MainActivity : AppCompatActivity() {
         // on below line we are adding on item
         // click listener for our grid view.
         courseGRV.onItemClickListener = AdapterView.OnItemClickListener { _, view, position, _ ->
-            // inside on click method we are simply displaying
-            // a toast message with course name.
-//            Toast.makeText(
-//                applicationContext, courseList[position].courseName + " selected",
-//                Toast.LENGTH_SHORT
-//
-//            ).show()
+
             if(view.alpha!=0.5f){
                 view.alpha=0.5f
                 selected_pages.add(position)}
@@ -87,9 +79,6 @@ class MainActivity : AppCompatActivity() {
 
             val fab: View = findViewById(R.id.fab)
             fab.setOnClickListener { view ->
-                Snackbar.make(view, "Here's a Snackbar "+selected_pages, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show()
                 val intent = Intent(this@MainActivity, ListGen::class.java)
                 intent.putExtra("position",0)
                 val args = Bundle()
@@ -103,13 +92,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initLists(){
-        output.add("")
+        output.add("СПИСОК ПОКУПОК:")
         val page0 : MutableList<String> = mutableListOf()
         page0.add("")
-        page0.add("молоко")
+        page0.add("Молоко")
         page0.add("Кефир")
-        page0.add("ривион")
-        page0.add("сметана")
+        page0.add("Ривион")
+        page0.add("Сметана")
         page0.add("йогурт")
         page0.add("сливочное масло")
         page0.add("Желтый сыр")

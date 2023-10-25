@@ -36,10 +36,6 @@ class ListGen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_gen)
-
-
-
-
     }
 
     override fun onResume() {
@@ -91,18 +87,10 @@ class ListGen : AppCompatActivity() {
                     val bmpUri = FileProvider.getUriForFile(this, "com.codepath.fileprovider", file)
                     if (bitmap != null) {
                         saveImageToGallery(bitmap)
-//                        val snackbar = Snackbar.make(view, "Изображение сохранено в галерее", Snackbar.LENGTH_INDEFINITE)
-//                            .setAction("Action", null)
-//                        val view: View = snackbar.getView()
-//                        val params = view.layoutParams as FrameLayout.LayoutParams
-//                        params.gravity = Gravity.CENTER
-//                        view.layoutParams = params
-//                        snackbar.show()
                         val toast = Toast.makeText(
                             applicationContext, " Изображение сохранено в галерее",
                             Toast.LENGTH_SHORT
                         )
-//                        toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show()
                     }
 
