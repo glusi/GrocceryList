@@ -72,11 +72,11 @@ class MainActivity : AppCompatActivity() {
         courseGRV.onItemClickListener = AdapterView.OnItemClickListener { _, view, position, _ ->
             // inside on click method we are simply displaying
             // a toast message with course name.
-            Toast.makeText(
-                applicationContext, courseList[position].courseName + " selected",
-                Toast.LENGTH_SHORT
-
-            ).show()
+//            Toast.makeText(
+//                applicationContext, courseList[position].courseName + " selected",
+//                Toast.LENGTH_SHORT
+//
+//            ).show()
             if(view.alpha!=0.5f){
                 view.alpha=0.5f
                 selected_pages.add(position)}

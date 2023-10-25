@@ -4,29 +4,30 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
+import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
+import android.util.LruCache
+import android.view.Gravity
 import android.view.View
-import android.view.View.MeasureSpec
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
+import android.widget.ListAdapter
 import android.widget.ListView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.Serializable
-import android.graphics.Paint
-import android.media.MediaScannerConnection
-import android.util.LruCache
-import android.view.ViewGroup
-import android.widget.ListAdapter
+
 
 class ListGen : AppCompatActivity() {
     lateinit var listView: ListView
@@ -88,7 +89,22 @@ class ListGen : AppCompatActivity() {
 
                     // Share the saved image using FileProvider
                     val bmpUri = FileProvider.getUriForFile(this, "com.codepath.fileprovider", file)
-
+                    if (bitmap != null) {
+                        saveImageToGallery(bitmap)
+//                        val snackbar = Snackbar.make(view, "Изображение сохранено в галерее", Snackbar.LENGTH_INDEFINITE)
+//                            .setAction("Action", null)
+//                        val view: View = snackbar.getView()
+//                        val params = view.layoutParams as FrameLayout.LayoutParams
+//                        params.gravity = Gravity.CENTER
+//                        view.layoutParams = params
+//                        snackbar.show()
+                        val toast = Toast.makeText(
+                            applicationContext, " Изображение сохранено в галерее",
+                            Toast.LENGTH_SHORT
+                        )
+//                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show()
+                    }
 
                     val intent = Intent(Intent.ACTION_SEND)
                     //intent.setType("image/*")
@@ -116,10 +132,10 @@ class ListGen : AppCompatActivity() {
             listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
             listView.onItemClickListener =
                 AdapterView.OnItemClickListener { _, view_item, position_iternal, _ ->
-                    Toast.makeText(
-                        applicationContext, " selected",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        applicationContext, " selected",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                     if (view_item.alpha != 0.5f) {
                         val border = GradientDrawable()
                         border.setColor(Color.argb(220, 50, 168, 78)) //white background
@@ -202,7 +218,7 @@ class ListGen : AppCompatActivity() {
         return bigBitmap
     }
     private fun saveImageToGallery(bitmap: Bitmap) {
-        val filename = "your_image.png"
+        val filename = "grocery-list-"+System.currentTimeMillis()+".png"
         val savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 
         val file = File(savePath, filename)
