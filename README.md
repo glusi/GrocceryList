@@ -1,4 +1,4 @@
-# GrocceryList
+# GroceryList
 
 Premade Lists of products for personal family's use. The app is in Russian.
 
